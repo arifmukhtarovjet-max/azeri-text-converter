@@ -1,22 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
-           xsi:type="TaskPaneApp"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8" ?>
+<OfficeApp
+    xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+    xsi:type="TaskPaneApp"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
 
   <Id>your-unique-id-here</Id>
   <Version>1.0.0.0</Version>
   <ProviderName>YourName</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
 
-  <DisplayName DefaultValue="Azeri Converter"/>
-  <Description DefaultValue="Convert Cyrillic to Azerbaijani Latin"/>
+  <DisplayName DefaultValue="Azeri Converter" />
+  <Description DefaultValue="Convert Cyrillic to Azerbaijani Latin" />
 
   <Hosts>
-    <Host Name="Word"/>
+    <Host Name="Word" />
   </Hosts>
 
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://localhost:3000/index.html"/>
+    <SourceLocation
+            DefaultValue="https://github.com/arifmukhtarovjet-max/azeri-text-converter"
+        />
   </DefaultSettings>
 
   <Permissions>ReadWriteDocument</Permissions>
