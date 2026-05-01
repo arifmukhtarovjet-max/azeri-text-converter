@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>DOCX Font çevirici v.0.1</title>
+
+        <!-- docx library -->
+        <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+
+        <!-- file saver -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    </head>
+
+    <body>
+        <h2>DOCX Yüklə → Çevir → Endir</h2>
+
+        <input type="file" id="fileInput" accept=".docx" />
+        <button onclick="convertFile()">Çevir</button>
+
+        <script>
+            // Cyrillic → Latin mapping
+            const source =
+                "АБЖЧДЕЯФЭЕХЫИКГЛМНОЮПРСШЩТУЦВЙЗабжчдеяфэщхыикглмноюпрсштуцвйз";
+            const target =
+                "ABCÇDEƏFGHXIİKQLMNOÖPRSŞHTUÜVYZabcçdeəfghxıikqlmnoöprsştuüvyz";
+
+            const map = {};
+            for (let i = 0; i < source.length; i++) {
+                map[source[i]] = target[i];
+            }
+
+            function convertText(text) {
+                return [...text].map((c) => map[c] || c).join("");
+            }
+
+            async function convertFile() {
+                const fileInput = document.getElementById("fileInput");
+                const file = fileInput.files[0];
+
+                if (!file) {
+                    alert("Zəhmət olmazsa yalnız  *.docx faylı seçin");
+                    return;
+                }
+
+                const arrayBuffer = await file.arrayBuffer();
+
+                const { Document, Packer, Paragraph, TextRun } = window.docx;
+
+                const doc = await window.docx.Document.load(arrayBuffer);
+
+                const newParagraphs = [];
+
+                doc.getParagraphs().forEach((p) => {
+                    const text = p.getText();
+                    const converted = convertText(text);
+
+                    newParagraphs.push(
+                        new Paragraph({
+                            children: [new TextRun(converted)],
+                        }),
+                    );
+                });
+
+                const newDoc = new Document({
+                    sections: [{ children: newParagraphs }],
+                });
+
+                const blob = await Packer.toBlob(newDoc);
+                saveAs(blob, "converted.docx");
+            }
+        </script>
+    </body>
+</html>
